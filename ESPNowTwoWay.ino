@@ -7,16 +7,6 @@
 Embedis embedis(Serial);
 bool isConfigMode = false;
 
-/*
------------------------------------------------------------------------------------
-| frame header | control word | command word | length | data | checksum | end     |
------------------------------------------------------------------------------------
-| 2 bytes      | 1 byte       | 1 byte       | 2 bytes| n    | 1 byte   | 2 bytes |
------------------------------------------------------------------------------------
-| 53 59        |  08          |  01          |  00 05 |34 0A 03 00 0A | 05 | 54 43|
------------------------------------------------------------------------------------
-*/
-
 // REPLACE WITH THE MAC Address of your receiver  
 byte broadcastAddress[] =  {0x24, 0x4C, 0xAB, 0x48, 0xD4, 0x0E};
 
@@ -26,51 +16,20 @@ byte broadcastAddress[] =  {0x24, 0x4C, 0xAB, 0x48, 0xD4, 0x0E};
 
 #define CONFIG_PIN 14
 
-uint16_t i1=0;
-
 //Structure example to send data
 //Must match the receiver structure
 typedef struct struct_message {
     uint8_t buf1[bufferSize];    
 } struct_message;
 
+// Counters for incoming data through UART
+uint16_t i1=0;
+
 // Create a struct_message to hold outgoing data
 struct_message outgoingData;
 
 // Create a struct_message to hold incoming data
 struct_message incomingData;
-
-// get/set functions for the stored data
-
-template <typename T> String getSetting(const String& key, T defaultValue) {
-    String value;
-    if (!Embedis::get(key, value)) value = String(defaultValue);
-    return value;
-}
-
-template <typename T> String getSetting(const String& key, unsigned int index, T defaultValue) {
-    return getSetting(key + String(index), defaultValue);
-}
-
-String getSetting(const String& key) {
-    return getSetting(key, "");
-}
-
-template <typename T> bool setSetting(const String& key, T value) {
-    return Embedis::set(key, String(value));
-}
-
-template <typename T> bool setSetting(const String& key, unsigned int index, T value) {
-    return setSetting(key + String(index), value);
-}
-
-bool delSetting(const String& key) {
-    return Embedis::del(key);
-}
-
-bool delSetting(const String& key, unsigned int index) {
-    return delSetting(key + String(index));
-}
 
 // Callback when data is sent
 void OnDataSent(uint8_t *mac_addr, uint8_t sendStatus) {
@@ -143,7 +102,7 @@ void setup() {
         Serial.println("Setting broadcast address...");
     });
 
-      // Add command to read broadcastAddress from EEPROM
+    // Add command to read broadcastAddress from EEPROM
     Embedis::command( F("getbrdaddr"), [](Embedis* e) {
         if (e->argc != 1) return e->response(Embedis::ARGS_ERROR);
         Serial.println("Reading broadcast address...");
@@ -255,4 +214,36 @@ void char_array_to_byte_array(const char *str, byte byte_arr[], uint8_t string_l
 
         byte_arr[index / 2] = (byte)number;
     }
+}
+
+// get/set functions for the stored data
+
+template <typename T> String getSetting(const String& key, T defaultValue) {
+    String value;
+    if (!Embedis::get(key, value)) value = String(defaultValue);
+    return value;
+}
+
+template <typename T> String getSetting(const String& key, unsigned int index, T defaultValue) {
+    return getSetting(key + String(index), defaultValue);
+}
+
+String getSetting(const String& key) {
+    return getSetting(key, "");
+}
+
+template <typename T> bool setSetting(const String& key, T value) {
+    return Embedis::set(key, String(value));
+}
+
+template <typename T> bool setSetting(const String& key, unsigned int index, T value) {
+    return setSetting(key + String(index), value);
+}
+
+bool delSetting(const String& key) {
+    return Embedis::del(key);
+}
+
+bool delSetting(const String& key, unsigned int index) {
+    return delSetting(key + String(index));
 }
