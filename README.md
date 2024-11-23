@@ -7,8 +7,7 @@ I also faced one of the scenario like above where I was playing with mmwave sens
 
 ![My Photo](resources/wirelessUART.png)
 
-
-                                                                **Fig: Wireless Serial Transceiver**
+**Fig: Wireless Serial Transceiver**
 
 **Firmware Part :**
 
@@ -16,7 +15,7 @@ I also faced one of the scenario like above where I was playing with mmwave sens
 
 > ESP-NOW is a wireless communication protocol based on the data-link layer, which reduces the five layers of the OSI model to only one. This way, the data need not be transmitted through the network layer, the transport layer, the session layer, the presentation layer, and the application layer. Also, there is no need for packet headers or unpackers on each layer, which leads to a quick response reducing the delay caused by packet loss in congested networks.
 > 
-1. When MCU boot it checks the status of IO14 pin status. If IO14 is ground it will go into config mode. In config mode you can set the MAC address of MCU to which you want to communicate. If IO14 is not connected to ground on boot it will boot normally and start communicating with other MCU immediately.
-2. MCU can send 250 bytes of serial data in one go wirelessly as limited by ESP NOW library.
-3. I am using ESP8266 as MCU, FT23RL FTDL Mini USB to TTL Serial Converter and mmWave sensor in above diagram.
-4. Let me know you test this code and any feedback appreciated…
+2. When MCU boot it checks the status of IO14 pin status. If IO14 is ground it will go into config mode. In config mode you can set the MAC address of MCU to which you want to communicate. If IO14 is not connected to ground on boot it will boot normally and start communicating with other MCU immediately.
+3. MCU can send 250 bytes of serial data in one go wirelessly as limited by ESP NOW library.
+4. I am using ESP8266 as MCU, FT23RL FTDL Mini USB to TTL Serial Converter and mmWave sensor in above diagram.
+5. Let me know you test this code and any feedback appreciated…
