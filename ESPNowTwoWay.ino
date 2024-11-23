@@ -12,12 +12,15 @@
 */
 
 // REPLACE WITH THE MAC Address of your receiver  {0x40, 0x91, 0x51, 0x67, 0xF2, 0x5B};{0x24, 0x4C, 0xAB, 0x48, 0xD4, 0x0E};//
-uint8_t broadcastAddress[] =  {0x24, 0x4C, 0xAB, 0x48, 0xD4, 0x0E};//{0x48, 0x55, 0x19, 0xE0, 0x8B, 0xC3};
+uint8_t broadcastAddress[] = {0x48, 0x55, 0x19, 0xE0, 0x8B, 0xC3}; //{0x40, 0x91, 0x51, 0x67, 0xF2, 0x5B}; // 
 
 
 #define UART_BAUD 115200
 #define packTimeout 5 // ms (if nothing more on UART, then send packet)
 #define bufferSize 200 // using esp now you can only send 250 bytes at a time
+
+#define DELAY_BOOT 1
+#define BOOT_PIN 14
 
 uint8_t buf1[bufferSize];
 uint16_t i1=0;
@@ -69,7 +72,14 @@ void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
 void setup() {
   // Init Serial Monitor
   Serial.begin(UART_BAUD);
- 
+
+#if DELAY_BOOT
+  pinMode(BOOT_PIN, OUTPUT);
+  digitalWrite(BOOT_PIN, LOW);
+  Serial.println("Sensor booting up......");
+  delay(20000);
+  digitalWrite(BOOT_PIN, HIGH);
+#endif 
   // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
